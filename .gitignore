@@ -1,1 +1,8 @@
+# Node.js dependencies
+server/node_modules/
+
+# SQLite database
+server/*.db
+
+# Temporary files
 *.tmp
