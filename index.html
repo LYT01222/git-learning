@@ -1,178 +1,393 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>lyt个人主页</title>
-        <style>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYT 个人主页</title>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+    >
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Microsoft YaHei",
+                sans-serif;
+            color: #1f2937;
+            background: #f5f7fb;
+            line-height: 1.7;
+        }
+        header {
+            padding: 60px 20px 40px;
+            text-align: center;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        #avatar {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s;
+        }
+        #avatar:hover {
+            transform: scale(1.05);
+        }
+        header h1 {
+            margin: 20px 0 8px;
+            font-size: 2.5rem;
+            color: #111827;
+        }
+        header p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 1.05rem;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            min-height: 54px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid #e5e7eb;
+            backdrop-filter: blur(10px);
+        }
+        nav a {
+            color: #4b5563;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: #2563eb;
+        }
+        main {
+            width: min(900px, calc(100% - 32px));
+            margin: 40px auto;
+        }
+        section {
+            margin-bottom: 24px;
+            padding: 30px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #111827;
+        }
+        h3 {
+            margin-top: 24px;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            color: #374151;
+        }
+        p {
+            color: #4b5563;
+        }
+        ul,
+        ol {
+            padding-left: 24px;
+            color: #4b5563;
+        }
+        li {
+            margin: 6px 0;
+        }
+        .github-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .github-link:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th,
+        td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            color: #374151;
+            background: #f9fafb;
+        }
+        td {
+            color: #4b5563;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        label {
+            color: #374151;
+            font-size: 14px;
+        }
+        input {
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            background: #2563eb;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #name-result {
+            margin: 14px 0;
+            color: #2563eb;
+        }
+        #chat-box {
+            min-height: 180px;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding: 18px;
+
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+        }
+        #chat-box p,
+        #chat-box div {
+            margin: 10px 0;
+        }
+        #chat-form {
+            display: flex;
+            gap: 10px;
+        }
+        #chat-input {
+            flex: 1;
+            min-width: 0;
+        }
+        footer {
+            padding: 30px 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
             header {
-                text-align:center;
+                padding: 40px 20px 30px;
             }
-            h1 {
-                color: blue;
-                font-size: 3rem;
-            }
-            #avatar {
-                border-radius: 50%;
-                box-shadow: 10px 10px 3px gray;
-                opacity: 0.8;
-                transition: 1s;
-                width:125px;
-                height:125px;
-            }
-            #avatar:hover {
-                transform: scale(1.2);
+            header h1 {
+                font-size: 2rem;
             }
             nav {
-                display: flex;
-                flex-direction: row;
-                height: 50px;
-                justify-content:center;
-                gap:10px;
-                align-items: center;
-                font-size:15px;
-                padding:10px;
+                gap: 18px;
             }
-            nav a {
-                color: black;
+            main {
+                width: calc(100% - 20px);
+                margin: 20px auto;
             }
-            nav a:hover {
-                color: red;
+            section {
+                padding: 20px;
+                border-radius: 12px;
             }
-            section{
-                margin:30px 0;
+            form {
+                align-items: stretch;
             }
-            input {
-                border: 2px solid gray;
+            form input {
+                width: 100%;
             }
-            input:focus {
-                background-color: yellow;
-                border: 2px solid blue;
-                outline: none;
+            form button {
+                width: 100%;
             }
-            button {
-                transition: 1s;
+            #chat-form {
+                flex-direction: column;
             }
-            button:hover {
-                background-color: yellow;
-                transform: scale(1.1);
+            #chat-form button {
+                width: 100%;
             }
-            button:active {
-                background-color: blue;
+            table {
+                font-size: 14px;
             }
-            h3::before {
-                content: "⭐";
-                display: inline-block;
-                margin-right: 2px;
+            th,
+            td {
+                padding: 9px;
             }
-            @media (max-width: 600px) {
-                h1 {
-                    font-size: 30px;
-                }
-                nav {
-                    flex-direction: column;
-                }
-                #avatar{
-                    width:75px;
-                    height:75px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>我的个人主页</h1>
-            <img id="avatar" src="./images/363659.jpg" alt="我的头像">
-        </header>
-        <nav>
-            <a href="#about">关于我</a>
-            <a href="#goal">我的目标</a>
-            <a href="#skill">我的技能</a>
-        </nav>
-        <main>
-            <section>
-                <h2 id="about">关于我</h2>
-                <div>
-                    <p>
-                        我是一名大学生。<br>
-                        我正在学习 <span>Web 开发</span>。
-                    </p>
-                    <p>我喜欢算法竞赛。</p>
-                    <h3>我的兴趣</h3>
-                    <ul>
-                        <li class="interesting">算法竞赛</li>
-                        <li class="interesting">Web开发</li>
-                        <li class="interesting">编程</li>
-                    </ul>
-                    <h3>我的学习计划</h3>
-                    <ol>
-                        <li>学习HTML</li>
-                        <li>学习CSS</li>
-                        <li>学习JavaScript</li>
-                    </ol>
-                    <a href="https://github.com/LYT01222">我的 Github</a>
-                    <br>
-                </div>
-            </section>
-            <section>
-                <h2 id="goal">我的目标</h2>
-                <p>希望能够加入 Web 相关的团队。</p>
-            </section>
-            <section>
-                <h2 id="skill">我的技能</h2>
-                <table>
-                    <tr>
-                        <th colspan="2">我的技能</th>
-                    </tr>
-                    <tr>
-                        <th>技能</th>
-                        <th>掌握情况</th>
-                    </tr>
-                    <tr>
-                        <td>C++</td>
-                        <td>熟练</td>
-                    </tr>
-                    <tr>
-                        <td>Git</td>
-                        <td>会初步运用</td>
-                    </tr>
-                    <tr>
-                        <td>HTML</td>
-                        <td>正在学习</td>
-                    </tr>
-                    <tr>
-                        <td>CSS</td>
-                        <td>还未学习</td>
-                    </tr>
-                    <tr>
-                        <td>JavaScript</td>
-                        <td>还未学习</td>
-                    </tr>
-                </table>
-            </section>
-        </main>
-        <form>
-            <label for="name">你的名字：</label>
-            <input id="name" type="text">
-            <label for="message">你的留言：</label>
-            <input id="message" type="text">
-            <button>提交</button>
-        </form>
-        <p id="name-result"></p>
-        <div id="messages"></div>
-        <form>
-            <label for="age">你的年龄：</label>
-            <input id="age" type="number">
-            <button>提交</button>
-        </form>
-        <form>
-            <label for="password">你的密码：</label>
-            <input id="password" type="password">
-            <button>提交</button>
-        </form>
-        <footer>
-            <p>© 2026 LYT</p>
-        </footer>
-        <script src="script.js"></script>
-    </body>
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img id="avatar" src="./images/363659.jpg" alt="我的头像">
+        <h1>李岳庭的个人主页</h1>
+        <p>正在学习 Web 开发与 AI Native</p>
+    </header>
+    <nav>
+        <a href="#about">关于我</a>
+        <a href="#goal">我的目标</a>
+        <a href="#skill">我的技能</a>
+        <a href="#message-board">留言板</a>
+        <a href="#chat-section">AI 助手</a>
+    </nav>
+    <main>
+        <section id="about">
+            <h2>关于我</h2>
+            <p>
+                我是一名大学生，目前正在学习 Web 开发。
+            </p>
+            <p>
+                我喜欢算法竞赛，也对 Web 和 AI 应用开发感兴趣。
+            </p>
+            <h3>我的兴趣</h3>
+            <ul>
+                <li>算法竞赛</li>
+                <li>Web 开发</li>
+                <li>编程</li>
+            </ul>
+            <h3>我的学习计划</h3>
+            <ol>
+                <li>巩固 Web 基础</li>
+                <li>学习 AI Native 开发</li>
+                <li>尝试开发完整的 Web + AI 项目</li>
+            </ol>
+            <a
+                class="github-link"
+                href="https://github.com/LYT01222"
+                target="_blank"
+            >
+                查看我的 GitHub →
+            </a>
+        </section>
+        <section id="goal">
+            <h2>我的目标</h2>
+            <p>
+                希望能够加入 Web 相关的团队，继续学习 Web 与 AI
+                应用开发，并通过实际项目积累经验。
+            </p>
+        </section>
+        <section id="skill">
+            <h2>我的技能</h2>
+            <table>
+                <tr>
+                    <th>技能</th>
+                    <th>掌握情况</th>
+                </tr>
+                <tr>
+                    <td>C++</td>
+                    <td>熟练</td>
+                </tr>
+                <tr>
+                    <td>Git</td>
+                    <td>会初步运用</td>
+                </tr>
+                <tr>
+                    <td>HTML</td>
+                    <td>已学习</td>
+                </tr>
+                <tr>
+                    <td>CSS</td>
+                    <td>已学习</td>
+                </tr>
+                <tr>
+                    <td>JavaScript</td>
+                    <td>已学习</td>
+                </tr>
+                <tr>
+                    <td>Node.js / SQLite</td>
+                    <td>正在学习</td>
+                </tr>
+                <tr>
+                    <td>AI Web 开发</td>
+                    <td>正在学习</td>
+                </tr>
+            </table>
+        </section>
+        <section id="message-board">
+            <h2>留言板</h2>
+            <form id="name-form">
+                <label for="name">你的名字</label>
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="请输入名字"
+                >
+                <label for="message">你的留言</label>
+                <input
+                    id="message"
+                    type="text"
+                    placeholder="请输入留言"
+                >
+                <button type="submit">提交</button>
+            </form>
+            <p id="name-result"></p>
+            <p>想看看大家都留下了什么？可以问问下面的 AI 小助手。</p>
+        </section>
+        <section id="chat-section">
+            <h2>AI 小助手</h2>
+            <div id="chat-box">
+                <p>AI：你好，有什么可以问我的吗？</p>
+            </div>
+            <form id="chat-form">
+                <input
+                    id="chat-input"
+                    type="text"
+                    placeholder="请输入你的问题"
+                >
+                <button type="submit">发送</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2026 LYT</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/auto-render.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
